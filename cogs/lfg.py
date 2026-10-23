@@ -343,6 +343,9 @@ class LFG(commands.Cog):
             coins=30,
             lfg_inc=1,
         )
+        await self.bot.db.log_lfg_game(
+            interaction.guild_id, interaction.user.id, game.strip()[:60]
+        )
         await self.bot.db.progress_contract(
             interaction.guild_id, interaction.user.id, "lfg_participate", 1
         )

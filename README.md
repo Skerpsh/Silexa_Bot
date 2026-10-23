@@ -33,6 +33,9 @@ Every system is interconnected through an asynchronous SQLite engine: chatting, 
 ### Hall of Fame Quote Card (`Apps -> Save to Hall of Fame` / `/halloffame`)
 <img src="assets/quote_preview.png" alt="Silexa Bot Hall of Fame Quote Card Preview" width="740" />
 
+### Server Weekly Wrapped Infographic (`/wrapped view`)
+<img src="assets/wrapped_preview.png" alt="Silexa Bot Weekly Wrapped Preview" width="780" />
+
 </div>
 
 ---
@@ -76,6 +79,17 @@ A deeply integrated progression system across all bot modules:
 - **Daily Contracts (`/contracts`):** Each member receives 3 personalized daily quests (spanning chat, voice time, LFG squads, Hall of Fame, and Time Capsules). Completing all 3 awards a **Daily Completion Bonus**.
 - **Achievement Badges (`/badges`):** Unlock 8 server badges (`💬 Chatterbox`, `🎙️ Voice Regular`, `🎮 Squad Leader`, `⭐ Hall of Famer`, `⏳ Time Traveler`, `🔥 Dedicated`, `💎 High Roller`, `👑 Server Veteran`).
 
+### 6. 🛒 Customization Shop & XP Boosters (`cogs/shop.py`)
+Spend earned Coins on visual customization and progression boosts:
+- **Profile Card Themes:** Unlock and equip custom `Pillow` color palettes (`🌆 Cyberpunk Neon`, `🩸 Crimson Blood`, `🧪 Emerald Matrix`, `👑 Royal Gold`, and `🌑 Discord Modern Dark`).
+- **Prestige Profile Titles:** Equip custom title tags rendered directly onto your `/profile` card (`[SERVER LEGEND]`, `[SQUAD WARLORD]`, `[CHRONO ORACLE]`, `[HIGH ROLLER VIP]`).
+- **2x XP Overclock (24h):** Doubles all XP earned from chat, voice, LFG, and contracts for 24 hours.
+
+### 7. 📊 Server Weekly Wrapped & Analytics (`cogs/stats.py`)
+Celebrate your community's top contributors with an automated weekly infographic:
+- **Visual Weekly Wrapped Card (`/wrapped view`):** Renders a `920×520` infographic highlighting the week's **Top Chatter**, **Voice Lounge Champion**, **Squad Leader MVP**, **Most Played LFG Game**, **Hall of Fame Quote of the Week**, and **Server Weekly Totals**.
+- **Automated Sunday Digest (`/wrapped setup`):** Automatically broadcasts the Weekly Wrapped card every Sunday, rewards weekly MVPs with **+150 Coins & +100 XP**, and resets weekly counters for a fresh competition.
+
 ---
 
 ## 📋 Command Reference
@@ -101,6 +115,10 @@ A deeply integrated progression system across all bot modules:
 | | `/halloffame setup <channel> [star_threshold]` | *(Manage Server)* Configure the Hall of Fame channel & ⭐ threshold |
 | **TempVoice** | `/tempvoice setup [category]` | *(Manage Channels)* Create the `➕ Join to Create` voice channel |
 | | `/tempvoice panel` | Re-post the room control panel inside your active TempVoice room |
+| **Shop & Locker** | `/shop browse` | Open the interactive shop to buy Profile Themes, Titles & 2x XP Boosts |
+| | `/shop inventory` | Open your locker to equip owned Profile Themes & Titles |
+| **Weekly Wrapped** | `/wrapped view` | Render the visual **Server Weekly Wrapped** infographic card |
+| | `/wrapped setup <channel>` | *(Manage Server)* Configure automatic Sunday Weekly Wrapped broadcasts |
 
 ---
 
@@ -112,6 +130,8 @@ Silexa_Bot/
 │   ├── __init__.py
 │   ├── general.py        # /ping & interactive /help dropdown view
 │   ├── economy.py        # Economy, XP listener, Daily Contracts, Badges & /profile
+│   ├── shop.py           # /shop browse & /shop inventory (Themes, Titles & 2x XP Boost)
+│   ├── stats.py          # /wrapped view & automatic Sunday Weekly Wrapped digest
 │   ├── lfg.py            # /lfg create & interactive LFGLobbyView with auto-voice
 │   ├── capsule.py        # /capsule commands & background unsealer task loop
 │   ├── quotes.py         # Context Menu, ⭐ reaction listener & /halloffame commands

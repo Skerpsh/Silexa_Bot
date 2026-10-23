@@ -46,6 +46,18 @@ class HelpCategorySelect(discord.ui.Select):
                 emoji="💰",
                 description="Visual Profile Cards, XP, Coins, Badges & Daily Contracts",
             ),
+            discord.SelectOption(
+                label="Customization Shop & Boosters",
+                value="shop",
+                emoji="🛒",
+                description="Buy Profile Card themes, custom titles & 2x XP Boosters",
+            ),
+            discord.SelectOption(
+                label="Weekly Wrapped & Analytics",
+                value="wrapped",
+                emoji="📊",
+                description="Visual Server Weekly Wrapped infographic & Sunday digests",
+            ),
         ]
         super().__init__(
             placeholder="Select a module to explore commands...",
@@ -174,6 +186,38 @@ def build_help_embed(section: str = "overview") -> discord.Embed:
         )
         return embed
 
+    if section == "shop":
+        embed = discord.Embed(
+            title="🛒 Customization Shop & XP Boosters",
+            description="Spend your hard-earned Coins on custom Profile Card color themes, prestigious titles, and XP boosts.",
+            color=config.COLOR_GOLD,
+        )
+        embed.add_field(
+            name="Commands",
+            value=(
+                "• `/shop browse` — Open the interactive shop to buy Themes (*Cyberpunk Neon*, *Crimson Blood*, *Emerald Matrix*, *Royal Gold*), Titles, and **2x XP Overclock (24h)**\n"
+                "• `/shop inventory` — Open your locker to switch between owned themes and titles"
+            ),
+            inline=False,
+        )
+        return embed
+
+    if section == "wrapped":
+        embed = discord.Embed(
+            title="📊 Server Weekly Wrapped & Analytics",
+            description="Generate a custom visual infographic of your server's weekly MVPs, voice hours, most-played LFG games, and top quotes.",
+            color=config.COLOR_BLURPLE,
+        )
+        embed.add_field(
+            name="Commands",
+            value=(
+                "• `/wrapped view` — Render the HD **Server Weekly Wrapped** infographic card right now\n"
+                "• `/wrapped setup <channel>` — *(Admin)* Enable automatic Sunday Weekly Wrapped digests (+150 Coins & +100 XP for weekly MVPs!)"
+            ),
+            inline=False,
+        )
+        return embed
+
     embed = discord.Embed(
         title="✨ Silexa Bot — Command Center",
         description=(
@@ -183,7 +227,9 @@ def build_help_embed(section: str = "overview") -> discord.Embed:
             "⏳ **Time Capsules** — `/capsule seal`, `/capsule list`\n"
             "⭐ **Hall of Fame** — `/halloffame`, ⭐ reactions & Right-Click `Save to Hall of Fame`\n"
             "🔊 **TempVoice Rooms** — `/tempvoice setup`, `/tempvoice panel`\n"
-            "💰 **Visual Profiles & Contracts** — `/profile`, `/contracts`, `/daily`, `/leaderboard`"
+            "💰 **Visual Profiles & Contracts** — `/profile`, `/contracts`, `/daily`, `/leaderboard`\n"
+            "🛒 **Shop & Cosmetics** — `/shop browse`, `/shop inventory`\n"
+            "📊 **Weekly Wrapped** — `/wrapped view`, `/wrapped setup`"
         ),
         color=config.COLOR_BLURPLE,
     )

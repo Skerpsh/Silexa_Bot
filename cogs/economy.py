@@ -255,6 +255,9 @@ class Economy(commands.Cog):
             badges=badges,
             contracts_done=contracts_done,
             contracts_total=len(contracts),
+            theme=user_data.get("equipped_theme", "default"),
+            equipped_title=user_data.get("equipped_title", ""),
+            xp_boost_active=user_data.get("xp_boost_until", 0) > int(time.time()),
         )
 
         file = discord.File(card_buf, filename="profile.png")
