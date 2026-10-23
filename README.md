@@ -104,12 +104,16 @@ Silexa_Bot/
 │   ├── __init__.py
 │   ├── database.py       # Async SQLite layer (aiosqlite), schema & contract/badge logic
 │   └── cards.py          # Pillow graphics engine for Profile Cards & Quote Cards
+├── .dockerignore         # Docker build exclusions
 ├── .env.example          # Environment configuration template
 ├── .gitignore            # Git exclusions (.env, data/, .venv/, __pycache__/)
+├── Dockerfile            # Production container image (Python 3.12 + Liberation fonts)
 ├── LICENSE               # MIT License
 ├── README.md             # Project documentation
 ├── bot.py                # Application entry point & SilexaBot class
 ├── config.py             # Environment loader, color palette & economy tuning constants
+├── deploy.sh             # One-command VPS update, build & restart script
+├── docker-compose.yml    # Persistent Docker Compose service configuration
 └── requirements.txt      # Python package dependencies
 ```
 
@@ -155,11 +159,45 @@ DISCORD_GUILD_ID=
 2. Invite the bot to your server using the **OAuth2 URL Generator** with scopes `bot` and `applications.commands`, and permissions:
    - `Manage Channels`, `Move Members`, `View Channels`, `Send Messages`, `Embed Links`, `Attach Files`, `Read Message History`, `Add Reactions`, `Connect`.
 
-### 5. Run the Bot
+### 5. Run the Bot Locally
 ```bash
 .venv/bin/python bot.py
 ```
 Upon startup, the bot automatically initializes `data/silexa.db`, loads all Cogs, syncs Slash & Context Menu commands, and prints its ready-to-use OAuth2 Invite URL to the console.
+
+---
+
+## 🚢 VPS Deployment (`./deploy.sh`)
+
+Silexa Bot includes a one-command deployment script (`deploy.sh`) designed for a fast **Push → Deploy** workflow:
+
+1. **On your local machine:**
+   ```bash
+   git push origin main
+   ```
+2. **On your VPS:**
+   ```bash
+   ./deploy.sh
+   ```
+
+### What `./deploy.sh` Does Automatically:
+- Pulls the latest commits from `origin/main` (`git fetch` + `git pull --ff-only`).
+- Preserves your `.env` configuration and `data/silexa.db` SQLite database.
+- **Systemd Mode (Default — `./deploy.sh` or `./deploy.sh --systemd`):**
+  - Creates/updates `.venv` and installs `requirements.txt`.
+  - Runs a pre-flight syntax verification (`py_compile`) before restarting so a broken commit never takes down the live bot.
+  - Automatically creates, enables, and restarts the `silexa-bot.service` systemd unit on your VPS.
+- **Docker Mode (`./deploy.sh --docker`):**
+  - Builds and restarts the container via `docker compose up -d --build` with `./data:/app/data` volume persistence.
+
+### Useful VPS Commands:
+```bash
+./deploy.sh            # Pull from GitHub, update dependencies & restart service
+./deploy.sh --docker   # Pull from GitHub & rebuild/restart via Docker Compose
+./deploy.sh --status   # Check current service/container status
+./deploy.sh --logs     # Follow live bot logs
+./deploy.sh --stop     # Stop the running bot
+```
 
 ---
 
