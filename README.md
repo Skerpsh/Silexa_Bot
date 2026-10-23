@@ -4,9 +4,11 @@
 
 **A modern, all-in-one Discord community, gaming & economy bot built with `discord.py` 2.x, `aiosqlite`, and `Pillow`.**
 
+[![CI](https://github.com/Skerpsh/Silexa_Bot/actions/workflows/ci.yml/badge.svg)](https://github.com/Skerpsh/Silexa_Bot/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![discord.py](https://img.shields.io/badge/discord.py-2.3%2B-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discordpy.readthedocs.io/)
 [![SQLite](https://img.shields.io/badge/SQLite-aiosqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://github.com/omnilib/aiosqlite)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](Dockerfile)
 [![License: MIT](https://img.shields.io/badge/License-MIT-F0B232?style=for-the-badge)](LICENSE)
 
 </div>
@@ -18,6 +20,20 @@
 **Silexa Bot** brings interactive, modern Discord UI features (**Slash Commands**, **Context Menus**, **Buttons**, **Select Menus**, and **Modals**) together with dynamic **Pillow-rendered visual cards** in a unified **Discord Modern Dark** aesthetic.
 
 Every system is interconnected through an asynchronous SQLite engine: chatting, hanging out in voice rooms, assembling gaming squads, sealing time capsules, and getting inducted into the Hall of Fame all contribute to your server profile, badges, and daily contracts.
+
+---
+
+## 🎨 Visual Card Showcase
+
+<div align="center">
+
+### HD Visual Profile Card (`/profile`)
+<img src="assets/profile_preview.png" alt="Silexa Bot Profile Card Preview" width="780" />
+
+### Hall of Fame Quote Card (`Apps -> Save to Hall of Fame` / `/halloffame`)
+<img src="assets/quote_preview.png" alt="Silexa Bot Hall of Fame Quote Card Preview" width="740" />
+
+</div>
 
 ---
 

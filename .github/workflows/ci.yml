@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  verify:
+    name: Verify Syntax, Cogs & Card Renderer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile Python modules
+        run: |
+          python -m py_compile bot.py config.py utils/*.py cogs/*.py
+
+      - name: Validate deploy.sh syntax
+        run: |
+          bash -n deploy.sh
+
+      - name: Smoke test Database, Pillow Cards & Cog Loader
+        run: |
+          python - << 'EOF'
+          import asyncio
+          from pathlib import Path
+          import config
+          from bot import SilexaBot
+          from utils.database import Database, get_level_info, get_user_badges
+          from utils.cards import render_profile_card, render_quote_card
+
+          async def main():
+              db = Database(Path("/tmp/ci_silexa.db"))
+              await db.connect()
+              await db.add_rewards(1, 1, xp=500, coins=300, messages_inc=50)
+              user = await db.ensure_user(1, 1)
+              lvl, cur, req = get_level_info(user["xp"])
+              buf1 = await render_profile_card(
+                  display_name="TestUser",
+                  username="testuser",
+                  avatar_bytes=None,
+                  level=lvl,
+                  xp_current=cur,
+                  xp_needed=req,
+                  rank=1,
+                  coins=user["coins"],
+                  messages_sent=user["messages_sent"],
+                  voice_minutes=15,
+                  lfg_count=2,
+                  hof_count=1,
+                  daily_streak=3,
+                  bio="CI Smoke Test",
+                  badges=get_user_badges(user),
+                  contracts_done=2,
+                  contracts_total=3,
+              )
+              assert len(buf1.getvalue()) > 1000
+              buf2 = await render_quote_card(
+                  quote_text="CI Quote Card Test",
+                  author_display_name="TestUser",
+                  author_username="testuser",
+                  author_avatar_bytes=None,
+                  channel_name="general",
+                  stars_count=5,
+              )
+              assert len(buf2.getvalue()) > 1000
+              await db.close()
+
+              bot = SilexaBot()
+              for cog_file in sorted(config.COGS_DIR.glob("*.py")):
+                  if not cog_file.name.startswith("_"):
+                      await bot.load_extension(f"cogs.{cog_file.stem}")
+              await bot.close()
+
+          asyncio.run(main())
+          EOF
